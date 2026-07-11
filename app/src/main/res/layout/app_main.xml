@@ -13,19 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="com.example.simpill.MainActivity">
+        tools:context="com.quangthe.nhacnho_uongthuoc.MainActivity">
 
-        <Button
-            android:id="@+id/about_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="24dp"
-            android:scaleX="1.6"
-            android:scaleY="1.6"
-            android:background="@drawable/ic_question_svgrepo_com"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="24dp" />
+
 
         <Button
             android:id="@+id/settingsButton"
@@ -36,6 +26,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="24dp" />
+
+        <Button
+            android:id="@+id/trash_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_delete_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/settingsButton"
+            app:layout_constraintEnd_toStartOf="@+id/settingsButton"
+            app:layout_constraintTop_toTopOf="@+id/settingsButton" />
 
         <Button
             android:id="@id/floating_action_button"
@@ -58,7 +58,7 @@
             app:layout_constraintBottom_toTopOf="@+id/floating_action_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/about_button" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"

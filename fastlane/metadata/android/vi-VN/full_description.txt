@@ -1,0 +1,9 @@
+<i>Simpill</i> là ứng dụng nhắc uống thuốc miễn phí và mã nguồn mở. Ứng dụng không chứa quảng cáo, trình theo dõi hay thu thập bất kỳ dữ liệu nào của người dùng. Bạn có thể chặn quyền truy cập internet của Simpill và nó vẫn sẽ hoạt động hoàn hảo.
+
+<b>Tính năng:</b>
+
+* Đặt nhắc nhở uống thuốc cho các loại thuốc của bạn.
+* Theo dõi lượng thuốc dự trữ và đặt ngày mua thêm.
+* Chọn màu sắc lọ thuốc cho từng loại thuốc.
+* Có sẵn chủ đề Sáng và Tối.
+* Tùy chọn định dạng thời gian 12/24 giờ.

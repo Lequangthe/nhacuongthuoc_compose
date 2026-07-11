@@ -76,10 +76,38 @@
         android:singleLine="false"
         android:textColor="@color/alice_blue"
         android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@id/mid_vertical_guideline"
+        app:layout_constraintStart_toEndOf="@id/pill_bottle_image"
+        app:layout_constraintTop_toBottomOf="@+id/pillName" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/dose_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        app:chipSpacingHorizontal="8dp"
+        app:chipSpacingVertical="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/mid_vertical_guideline"
         app:layout_constraintStart_toEndOf="@id/pill_bottle_image"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+        app:layout_constraintTop_toBottomOf="@+id/pillTime"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/context_menu_delete"
+        android:scaleX="1.1"
+        android:scaleY="1.2"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/end_vertical_guideline"
+        app:layout_constraintStart_toStartOf="@id/mid_vertical_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete_svgrepo_com" />
 
     <ImageButton
         android:id="@+id/resetButton"
@@ -90,7 +118,7 @@
         android:contentDescription="@string/reset_pill_content_description"
         android:scaleX="1.1"
         android:scaleY="1.2"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/end_vertical_guideline"
         app:layout_constraintStart_toStartOf="@id/mid_vertical_guideline"
@@ -106,7 +134,7 @@
         android:contentDescription="@string/take_pill_content_description"
         android:scaleX="1.1"
         android:scaleY="1.2"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/end_vertical_guideline"
         app:layout_constraintStart_toStartOf="@id/mid_vertical_guideline"

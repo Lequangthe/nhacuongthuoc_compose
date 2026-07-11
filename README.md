@@ -2,6 +2,8 @@
 
 # Simpill
 
+[Vietnamese version (Bản tiếng Việt)](README_VI.md)
+
 Simpill is a free and open-source Android app for medication reminders. It does not contain any ads, trackers or unnecessary permissions.
 
 <b>Features:</b>

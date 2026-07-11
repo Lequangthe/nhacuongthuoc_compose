@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.winston69.simpill"
+        applicationId "com.quangthe.nhacnho_uongthuoc"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 20
@@ -38,7 +38,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.example.simpill'
+    namespace 'com.quangthe.nhacnho_uongthuoc'
     lint {
         abortOnError false
     }

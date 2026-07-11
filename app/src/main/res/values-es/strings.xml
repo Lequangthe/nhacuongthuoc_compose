@@ -110,6 +110,8 @@
     <string name="donate_dialog_title">Hacer una donación</string>
     <string name="clocks_dialog_time_text">Hora #%1$d</string>
     <string name="choose_start_date_dialog_title">Fecha de inicio</string>
+    <string name="past_date_dialog_title">Hmm...</string>
+    <string name="past_date_dialog_message">No se puede seleccionar una fecha en el pasado. Por favor, seleccione una fecha futura.</string>
     <string name="app_sounds_enabled">App sounds enabled.</string>
     <string name="app_sounds_disabled">App sounds disabled.</string>
     <string name="donate_bitcoin">Donate Bitcoin</string>

@@ -109,6 +109,8 @@
     <string name="reset_pill_dialog_message">Aimeriez-vous réinitialiser l\'état de %1$s?</string>
 
     <!--Past Date Dialog Strings-->
+    <string name="past_date_dialog_title">Hmm...</string>
+    <string name="past_date_dialog_message">Vous ne pouvez pas sélectionner une date dans le passé. Veuillez sélectionner une date future.</string>
 
     <!--Extra Reminder Dialog Strings-->
 

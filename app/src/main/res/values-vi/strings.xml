@@ -1,0 +1,218 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" translatable="false">Nhắc uống thuốc</string>
+
+    <!--General Strings-->
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="ok" tools:ignore="ButtonCase,Typos">Ok</string>
+    <string name="taken">Đã uống</string>
+    <string name="dismiss">Bỏ qua</string>
+
+    <!--Content Description Strings-->
+    <string name="clock_content_description">Biểu tượng đồng hồ</string>
+    <string name="calendar_content_description">Biểu tượng lịch</string>
+    <string name="pill_bottle_content_description">Biểu tượng lọ thuốc</string>
+    <string name="pill_content_description">Biểu tượng viên thuốc</string>
+    <string name="reset_pill_content_description">Nút đặt lại trạng thái đã uống</string>
+    <string name="purple_pill_bottle_content_description">Lọ thuốc màu tím</string>
+    <string name="light_purple_pill_bottle_content_description">Lọ thuốc màu tím nhạt</string>
+    <string name="light_blue_pill_bottle_content_description">Lọ thuốc màu xanh dương nhạt</string>
+    <string name="red_pill_bottle_content_description">Lọ thuốc màu đỏ</string>
+    <string name="light_red_pill_bottle_content_description">Lọ thuốc màu đỏ nhạt</string>
+    <string name="pink_pill_bottle_content_description">Lọ thuốc màu hồng</string>
+    <string name="dark_green_pill_bottle_content_description">Lọ thuốc màu xanh lá đậm</string>
+    <string name="green_pill_bottle_content_description">Lọ thuốc màu xanh lá</string>
+    <string name="light_green_pill_bottle_content_description">Lọ thuốc màu xanh lá nhạt</string>
+    <string name="dark_orange_pill_bottle_content_description">Lọ thuốc màu cam đậm</string>
+    <string name="orange_pill_bottle_content_description">Lọ thuốc màu cam</string>
+    <string name="light_orange_pill_bottle_content_description">Lọ thuốc màu cam nhạt</string>
+    <string name="warning_icon_content_description">Biểu tượng cảnh báo</string>
+    <string name="blue_theme_button_content_description">Nút chủ đề xanh dương</string>
+    <string name="grey_theme_button_content_description">Nút chủ đề xám</string>
+    <string name="purple_theme_button_content_description">Nút chủ đề tím</string>
+    <string name="plus_button">Nút cộng</string>
+    <string name="minus_button">Nút trừ</string>
+
+    <!--Create/Update Pill Strings-->
+    <string name="enter_pill_name">Tên thuốc</string>
+    <string name="enter_pill_time_reminders">Nhắc nhở</string>
+    <string name="enter_pill_refill_date_reminder">Ngày mua thêm</string>
+    <string name="enter_pill_amount">Số lượng dự trữ</string>
+    <string name="create_pill_btn">Tạo</string>
+
+    <!--Settings Strings-->
+    <string name="settings">Cài đặt</string>
+    <string name="theme">Chủ đề</string>
+    <string name="time">Thời gian</string>
+    <string name="notifications">Thông báo</string>
+    <string name="sticky">Thông báo cố định</string>
+    <string name="_24_hour_format">Định dạng 24 giờ</string>
+    <string name="database">Cơ sở dữ liệu</string>
+    <string name="export_db">Xuất dữ liệu (Export)</string>
+    <string name="import_db">Nhập dữ liệu (Import)</string>
+    <string name="delete_all_pills">Xóa tất cả thuốc</string>
+
+
+    <string name="theme_applied">Đã áp dụng chủ đề %1$s :)</string>
+    <string name="select_theme_dialog_title">Chọn</string>
+    <string name="change_theme">Thay đổi chủ đề</string>
+
+    <!--About Strings-->
+    <string name="simpillAboutParagraph_1">Simpill là ứng dụng nhắc uống thuốc miễn phí và mã nguồn mở, không có trình theo dõi, quảng cáo phiền nhiễu hay yêu cầu quyền hạn không cần thiết.</string>
+    <string name="simpillAboutParagraph_2">Simpill là ứng dụng hoàn toàn miễn phí và không tạo ra doanh thu từ quảng cáo hay bán dữ liệu.\n\nNếu bạn muốn ủng hộ Simpill và sự phát triển trong tương lai, có một số lựa chọn quyên góp sau:</string>
+
+    <!--Pill Time TextView Strings-->
+    <string name="take_at">Uống lúc %1$s</string>
+    <string name="take_at_custom_interval">Uống lúc %1$s\n(%2$s)</string>
+    <string name="taken_at">Đã uống lúc %1$s</string>
+
+    <!--Toast Strings-->
+    <string name="device_restart_toast">Đang đặt lại báo thức cho Simpill :)</string>
+    <string name="time_format_24hr_toast">Đã đặt định dạng 24 giờ.</string>
+    <string name="time_format_12hr_toast">Đã đặt định dạng 12 giờ.</string>
+    <string name="pill_taken_toast">Đã uống %1$s.</string>
+    <string name="pill_reset_toast">Đã đặt lại %1$s.</string>
+    <string name="sticky_notifications_enabled_toast">Đã bật thông báo cố định.</string>
+    <string name="sticky_notifications_disabled_toast">Đã tắt thông báo cố định.</string>
+    <string name="unknown_error_toast">Lỗi không xác định trong Simpill :(</string>
+    <string name="pill_db_deleted_toast">Đã xóa tất cả thuốc.</string>
+    <string name="append_pill_deleted_toast">Đã xóa %1$s.</string>
+    <string name="pill_bottle_amount_toast">Bạn còn %1$d viên %2$s.</string>
+
+    <!--Reminder Notification Strings-->
+    <string name="reminder_notification_description">Đến giờ uống thuốc rồi: %1$s :)</string>
+
+    <!--Welcome Dialog Strings-->
+    <string name="welcome_dialog_title">Chào mừng</string>
+    <string name="welcome_dialog_message">Để tạo thuốc đầu tiên, hãy chọn nút dấu cộng ở cuối màn hình.</string>
+
+    <!--Pill Name Dialog Strings-->
+    <string name="pill_name_dialog_title">Tên thuốc</string>
+    <string name="pill_name_dialog_msg">Vui lòng nhập tên thuốc bằng cách nhấn vào dòng bên dưới:\n</string>
+    <string name="pill_name_dialog_text_hint">Tên - ngắn gọn thôi nhé :)</string>
+
+    <!--Pill Amount Dialog Strings-->
+    <string name="done">Xong</string>
+    <string name="choose_pill_amount_dialog_title">Số lượng</string>
+
+    <!--Delete Pill Dialog Strings-->
+    <string name="pill_deletion_dialog_title">Xóa</string>
+    <string name="pill_deletion_dialog_message">Bạn có chắc chắn muốn xóa %1$s không?\n\nHành động này không thể hoàn tác!</string>
+
+    <!--Delete Database Dialog Strings-->
+    <string name="pill_db_reset_dialog_title">Xóa thuốc</string>
+    <string name="pill_db_reset_dialog_message">Bạn có muốn xóa toàn bộ cơ sở dữ liệu thuốc không?\n\nCẢNH BÁO: Thao tác này sẽ xóa tất cả thuốc - KHÔNG THỂ hoàn tác!</string>
+
+    <!--Pill Reset Dialog Strings-->
+    <string name="reset_pill_dialog_title">Đặt lại</string>
+    <string name="reset_pill_dialog_message">Bạn có muốn đặt lại trạng thái đã uống của %1$s không?</string>
+
+    <!--Frequency Dialog Strings-->
+    <string name="choose_frequency_dialog_message">Bạn uống thuốc này thường xuyên như thế nào?</string>
+    <string name="choose_frequency_dialog_title">Tần suất</string>
+    <string name="choose_frequency_dialog_custom_interval">Đặt khoảng thời gian tùy chỉnh</string>
+    <string name="choose_frequency_dialog_weekly">Hàng tuần</string>
+    <string name="choose_frequency_dialog_every_other_day">Cách ngày</string>
+    <string name="choose_frequency_dialog_daily">Hàng ngày</string>
+    <string name="choose_frequency_dialog_multiple_daily">Nhiều lần một ngày</string>
+
+    <!--Ask Overlay Permission Dialog Strings-->
+    <string name="ask_overlay_permission_dialog_title">Hiển thị trên ứng dụng khác</string>
+    <string name="ask_overlay_permission_dialog_message">Để đặt báo thức, Simpill cần quyền \'hiển thị trên các ứng dụng khác\'.\n\nNếu bạn muốn nhận nhắc nhở báo thức toàn màn hình, vui lòng cấp quyền này cho Simpill trong cài đặt.\n\nLưu ý: Bạn có thể bật quyền này bất kỳ lúc nào qua cài đặt thiết bị.</string>
+
+    <!--Ask Overlay Permission Dialog Strings-->
+    <string name="alarm_or_notification_dialog_title">Báo thức</string>
+    <string name="alarm_or_notification_dialog_message">Bạn muốn được nhắc uống thuốc bằng báo thức hay thông báo?</string>
+
+    <string name="take_pill_content_description">Nút uống thuốc</string>
+    <string name="choose_times_per_day_dialog_message">Bạn uống thuốc này bao nhiêu lần một ngày?</string>
+
+
+    <string name="btc_address_copied">Đã sao chép địa chỉ BTC :)</string>
+    <string name="xmr_address_copied">Đã sao chép địa chỉ XMR :)</string>
+
+    <string name="custom_interval_dialog_message">Đặt khoảng thời gian tùy chỉnh (theo ngày) cho nhắc nhở thuốc bằng các nút bên dưới:</string>
+    <string name="custom_interval_dialog_title">Khoảng thời gian</string>
+
+
+    <string name="clocks_dialog_time_text">Thời gian #%1$d</string>
+    <string name="chooses_times_dialog_text">Đặt thời gian nhắc nhở thuốc bằng đồng hồ bên dưới:</string>
+
+    <string name="context_menu_update">Cập nhật</string>
+    <string name="context_menu_delete">Xóa</string>
+    <string name="context_menu_change_color">Thay đổi màu sắc</string>
+    <string name="context_menu_test_dose">Chạy thử (Test)</string>
+    <string name="trash">Thùng rác</string>
+    <string name="restore">Khôi phục</string>
+    <string name="delete_permanently">Xóa vĩnh viễn</string>
+    <string name="trash_empty">Thùng rác trống.</string>
+    <string name="donation_dialog_message">Nếu bạn thích sử dụng Simpill, hãy cân nhắc quyên góp nhé :)\n\nSimpill hoàn toàn miễn phí và mã nguồn mở, không có quảng cáo hay trình theo dõi.\n\nBạn có thể quyên góp bằng một trong các nút bên dưới:</string>
+    <string name="reminder_already_taken_description">Bạn đã uống %1$s rồi :)</string>
+
+    <!--Use masculine for translations-->
+    <string name="blue">Xanh dương</string>
+    <string name="grey">Xám</string>
+    <string name="dark">Tối</string>
+    <string name="purple">Tím</string>
+
+    <string name="dark_dialogs_setting">Hộp thoại tối</string>
+    <string name="dark_dialogs_toast">Đã áp dụng hộp thoại tối :)</string>
+    <string name="light_dialogs_toast">Đã áp dụng hộp thoại sáng :)</string>
+
+    <string name="dev_email">Email nhà phát triển</string>
+    <string name="simpill_code">Mã nguồn Simpill</string>
+    <string name="time_warning_toast">Các thời điểm phải cách nhau ít nhất 15 phút.</string>
+    <string name="time_enter">Vui lòng nhập thời gian cho mỗi đồng hồ.</string>
+    <string name="press_back_again_toast">Nhấn phím quay lại một lần nữa để thoát.</string>
+
+    <string name="choose_start_date_dialog_title">Ngày bắt đầu</string>
+    <string name="choose_start_date_dialog_message">Chọn ngày bắt đầu uống thuốc bằng lịch bên dưới.</string>
+    <string name="donate_dialog_title">Quyên góp</string>
+    <string name="donate_monero">Quyên góp Monero</string>
+    <string name="donate_via_paypal">Quyên góp qua Paypal</string>
+    <string name="choose_times_per_day_dialog_title">Nhắc nhở</string>
+
+    <string name="append_days_to_custom_interval">Mỗi %1$d ngày</string>
+    <string name="sound">Âm thanh</string>
+    <string name="sound_switch">Âm thanh ứng dụng</string>
+    <string name="app_sounds_enabled">Đã bật âm thanh ứng dụng.</string>
+    <string name="app_sounds_disabled">Đã tắt âm thanh ứng dụng.</string>
+    <string name="donate_bitcoin">Quyên góp Bitcoin</string>
+    <string name="pill_time_interval_text">Mỗi %1$d ngày, bắt đầu từ %2$s</string>
+    <string name="frequency">Tần suất:\n</string>
+    <string name="alarm_type_alarm">Loại: Báo thức</string>
+    <string name="alarm">Báo thức</string>
+    <string name="notification">Thông báo</string>
+    <string name="dialog_message_textview">Vui lòng đặt thời gian uống thuốc và loại báo thức bằng các nút bên dưới.</string>
+    <string name="reminder_times">Thời gian:\n</string>
+    <string name="reminder_type">Loại nhắc nhở:\n</string>
+    <string name="reminder_sound">Tệp:\n</string>
+    <string name="custom_alarm_dialog_title">Báo thức tùy chỉnh</string>
+    <string name="custom_alarm_dialog_message">Bạn muốn sử dụng tệp âm thanh của riêng mình hay âm báo mặc định của Simpill?</string>
+    <string name="custom_alarm">Tùy chỉnh</string>
+    <string name="default_alarm">Mặc định</string>
+    <string name="no_song_selected">Chưa chọn tệp âm thanh.</string>
+    <string name="its_time">Đến giờ %1$s rồi!</string>
+    <string name="paypal">Paypal</string>
+    <string name="no_pills_found">Không tìm thấy thuốc nào.\n(╯°□°）╯︵ ┻━┻</string>
+    <string name="add">Thêm</string>
+    <string name="optional">Tùy chọn</string>
+    <string name="reminder">Nhắc nhở</string>
+    <string name="times">Thời gian</string>
+    <string name="alarm_type">Loại báo thức</string>
+    <string name="user_reminder_times">Thời gian nhắc nhở:\n12:00 CH,</string>
+    <string name="user_frequency">Tần suất:\nMỗi 3 ngày</string>
+    <string name="user_notification">Loại:\nThông báo</string>
+    <string name="user_alarm_sound">Âm thanh:\nDoomsday Alarm</string>
+    <string name="crash_dialog_title">Ôi không :(</string>
+    <string name="report">báo cáo</string>
+    <string name="open">Mở</string>
+    <string name="refill_dialog_msg">Chọn ngày mua thêm bằng lịch bên dưới.</string>
+    <string name="past_date_dialog_title">Hừm...</string>
+    <string name="import_success">Nhập dữ liệu thành công!</string>
+    <string name="import_fail">Nhập dữ liệu thất bại.</string>
+    <string name="export_success">Xuất dữ liệu thành công!</string>
+    <string name="export_fail">Xuất dữ liệu thất bại.</string>
+    <string name="past_date_dialog_message">Trừ khi bạn có TARDIS, nếu không thì không thể đặt ngày trong quá khứ đâu.</string>
+</resources>

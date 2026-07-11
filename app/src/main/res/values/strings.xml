@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name" translatable="false">Simpill</string>
+    <string name="app_name" translatable="false">Nhắc uống thuốc</string>
 
     <!--General Strings-->
     <string name="yes">Yes</string>
@@ -35,10 +35,10 @@
     <string name="minus_button">Minus Button</string>
 
     <!--Create/Update Pill Strings-->
-    <string name="enter_pill_name">Pill Name?</string>
-    <string name="enter_pill_time_reminders">Reminders?</string>
-    <string name="enter_pill_refill_date_reminder">Refill Date?</string>
-    <string name="enter_pill_amount">Supply?</string>
+    <string name="enter_pill_name">Pill Name</string>
+    <string name="enter_pill_time_reminders">Reminders</string>
+    <string name="enter_pill_refill_date_reminder">Refill Date</string>
+    <string name="enter_pill_amount">Supply</string>
     <string name="create_pill_btn">Create</string>
 
     <!--Create/Update Pill Warning Strings-->
@@ -52,6 +52,8 @@
     <string name="sticky">Sticky Notifications</string>
     <string name="_24_hour_format">24 Hour Format</string>
     <string name="database">Database</string>
+    <string name="export_db">Export Database</string>
+    <string name="import_db">Import Database</string>
     <string name="delete_all_pills">Delete All Pills</string>
 
 
@@ -108,7 +110,7 @@
     <string name="choose_pill_amount_dialog_title">Amount</string>
 
     <!--Delete Pill Dialog Strings-->
-    <string name="pill_deletion_dialog_title">Delete?</string>
+    <string name="pill_deletion_dialog_title">Delete</string>
     <string name="pill_deletion_dialog_message">Are you sure you want to delete %1$s?\n\nThis cannot be undone!</string> <!--1st parameter = name of pill-->
 
     <!--Delete Database Dialog Strings-->
@@ -116,10 +118,11 @@
     <string name="pill_db_reset_dialog_message">Would you like to delete the entire pill database?\n\nWARNING: This will remove all pills - it CANNOT be undone!</string>
 
     <!--Pill Reset Dialog Strings-->
-    <string name="reset_pill_dialog_title">Reset?</string>
+    <string name="reset_pill_dialog_title">Reset</string>
     <string name="reset_pill_dialog_message">Would you like to reset the taken status of %1$s?</string>
 
     <!--Past Date Dialog Strings-->
+    <string name="past_date_dialog_message">You cannot select a date in the past. Please select a future date.</string>
 
     <!--Extra Reminder Dialog Strings-->
 
@@ -137,7 +140,7 @@
     <string name="ask_overlay_permission_dialog_message">To set alarms, Simpill needs the \'display over other apps\' permission.\n\nIf you would like to receive full-screen alarm reminders, please grant this permission to Simpill in your settings.\n\nNote: You can enable this permission at any time via your device\'s settings.</string>
 
     <!--Ask Overlay Permission Dialog Strings-->
-    <string name="alarm_or_notification_dialog_title">Alarm?</string>
+    <string name="alarm_or_notification_dialog_title">Alarm</string>
     <string name="alarm_or_notification_dialog_message">Would you like to be reminded about this medication with an alarm or notification?</string>
 
     <!--Date Time Formatting Strings (Very fragile, do not touch)-->
@@ -160,6 +163,11 @@
     <string name="context_menu_update">Update</string>
     <string name="context_menu_delete">Delete</string>
     <string name="context_menu_change_color">Change Color</string>
+    <string name="context_menu_test_dose">Test Dose</string>
+    <string name="trash">Trash</string>
+    <string name="restore">Restore</string>
+    <string name="delete_permanently">Delete Permanently</string>
+    <string name="trash_empty">Trash is empty.</string>
     <string name="donation_dialog_message">If you enjoy using Simpill, please consider making a donation :)\n\nSimpill is completely free and open-source without any ads or trackers.\n\nYou can donate using one of the buttons below:</string>
     <string name="reminder_already_taken_description">You have already taken your %1$s :)</string> <!--1st parameter = name of pill-->
 
@@ -205,7 +213,7 @@
     <string name="reminder_times">Times:\n</string>
     <string name="reminder_type">Reminder Type:\n</string>
     <string name="reminder_sound">File:\n</string>
-    <string name="custom_alarm_dialog_title">Custom Alarm?</string>
+    <string name="custom_alarm_dialog_title">Custom Alarm</string>
     <string name="custom_alarm_dialog_message">Would you like to use your own audio file or Simpill\'s default alarm sound?</string>
     <string name="custom_alarm">Custom</string>
     <string name="default_alarm">Default</string>
@@ -216,8 +224,8 @@
     <string name="add">Add</string>
     <string name="optional">Optional</string>
     <string name="reminder">Reminder</string>
-    <string name="times">Times?</string>
-    <string name="alarm_type">Alarm Type?</string>
+    <string name="times">Times</string>
+    <string name="alarm_type">Alarm Type</string>
     <string name="user_reminder_times">Reminder Times:\n12:00pm,</string>
     <string name="user_frequency">Frequency:\nEvery 3 days</string>
     <string name="user_notification">Type:\nNotification</string>
@@ -227,5 +235,8 @@
     <string name="open">Open</string>
     <string name="refill_dialog_msg">Select a refill date using the calendar below.</string>
     <string name="past_date_dialog_title">Hmm...</string>
-    <string name="past_date_dialog_message">Unless you have access to a TARDIS, the date cannot be set in the past.</string> <!--1st param is current time e.g. 16:20-->
+    <string name="import_success">Database imported successfully!</string>
+    <string name="import_fail">Failed to import database.</string>
+    <string name="export_success">Database exported successfully!</string>
+    <string name="export_fail">Failed to export database.</string>
 </resources>

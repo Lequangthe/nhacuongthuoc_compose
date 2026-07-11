@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
 
     <Button
         android:id="@+id/back_button"
@@ -161,42 +167,17 @@
     <TextView
         android:id="@+id/notifications_textview"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:text="@string/notifications"
-        android:textColor="@color/alice_blue"
-        android:fontFamily="@font/inter_reg"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/sticky_notifications_switch"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/soundSwitch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sticky_notifications_switch"
-        android:theme="@style/SwitchCompatTheme"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:elegantTextHeight="true"
-        android:fontFamily="@font/inter_reg"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:text="@string/sticky"
-        android:textAllCaps="false"
-        android:textColor="@color/alice_blue"
-        android:textSize="24sp"
-        android:textStyle="normal"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notifications_textview" />
@@ -220,6 +201,70 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
     <Button
+        android:id="@+id/export_db_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_reg"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:text="@string/export_db"
+        android:textAllCaps="false"
+        android:textColor="@color/alice_blue"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/database_textview" />
+
+    <View
+        android:id="@+id/export_divider"
+        android:backgroundTint="@color/alice_blue"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/export_db_btn"
+        tools:ignore="UnusedAttribute" />
+
+    <Button
+        android:id="@+id/import_db_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter_reg"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:text="@string/import_db"
+        android:textAllCaps="false"
+        android:textColor="@color/alice_blue"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/export_divider" />
+
+    <View
+        android:id="@+id/import_divider"
+        android:backgroundTint="@color/alice_blue"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/import_db_btn"
+        tools:ignore="UnusedAttribute" />
+
+    <Button
         android:id="@+id/delete_db_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -240,7 +285,7 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/database_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/import_divider" />
 
     <View
         android:backgroundTint="@color/alice_blue"
@@ -339,27 +384,8 @@
         app:layout_constraintTop_toBottomOf="@id/delete_db_btn"
         tools:ignore="UnusedAttribute" />
 
-    <View
-        android:backgroundTint="@color/alice_blue"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="?android:attr/listDivider"
-        android:alpha="0.5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sticky_notifications_switch"
-        tools:ignore="UnusedAttribute" />
-
-    <View
-        android:backgroundTint="@color/alice_blue"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="?android:attr/listDivider"
-        android:alpha="0.5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sticky_notifications_switch"
-        tools:ignore="UnusedAttribute" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
