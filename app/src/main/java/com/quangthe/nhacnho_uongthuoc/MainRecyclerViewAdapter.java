@@ -240,6 +240,19 @@ public class MainRecyclerViewAdapter
             doseChip.setOnLongClickListener(v -> {
                 toasts.showCustomToast("Đang test thông báo cữ " + displayTime + "...");
                 pill.sendPillNotification(context, doseIndex);
+                
+                // Hiệu ứng xanh ảo trong 1.5 giây
+                if (!pill.isDoseTaken(doseIndex)) {
+                    doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_green));
+                    doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.white, null));
+                    v.postDelayed(() -> {
+                        // Trả lại màu cũ nếu thực tế chưa bấm uống
+                        if (!pill.isDoseTaken(doseIndex)) {
+                            doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_dark));
+                            doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.alice_blue, null));
+                        }
+                    }, 1500);
+                }
                 return true;
             });
             

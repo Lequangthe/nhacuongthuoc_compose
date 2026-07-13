@@ -364,50 +364,28 @@ public class Pill {
                         pillAlarmPendingIntent);
             }
         }
-        for (int currentNumber = 0; currentNumber < alarmReminderTimes.length; currentNumber++) {
-            int requestCode = getAlarmRequestCodes()[currentNumber];
+        // Set a single auto-reset alarm for the pill at 00:01 AM (Next day)
+        int resetRequestCode = getPrimaryKey() * 1000 + 999;
+        Intent startAutoResetReceiver = new Intent(context, ReceiverPillAutoReset.class);
+        startAutoResetReceiver.putExtra(PRIMARY_KEY_INTENT_KEY_STRING, getPrimaryKey());
+        startAutoResetReceiver.putExtra(NOTIFICATION_ID_INTENT_KEY_STRING, resetRequestCode);
 
-            Intent startAutoResetReceiver = new Intent(context, ReceiverPillAutoReset.class);
-            startAutoResetReceiver.putExtra(PRIMARY_KEY_INTENT_KEY_STRING, getPrimaryKey());
-            startAutoResetReceiver.putExtra(NOTIFICATION_ID_INTENT_KEY_STRING, requestCode);
+        @SuppressLint("InlinedApi")
+        PendingIntent autoResetPendingIntent =
+                PendingIntent.getBroadcast(
+                        context,
+                        resetRequestCode,
+                        startAutoResetReceiver,
+                        PendingIntent.FLAG_IMMUTABLE);
+        alarmManager.cancel(autoResetPendingIntent); // cancel old auto resets
 
-            @SuppressLint("InlinedApi")
-            PendingIntent autoResetPendingIntent =
-                    PendingIntent.getBroadcast(
-                            context,
-                            requestCode,
-                            startAutoResetReceiver,
-                            PendingIntent.FLAG_IMMUTABLE);
-            alarmManager.cancel(autoResetPendingIntent); // cancel old auto resets
+        long resetTime = dateTimeManager.convertTimeToCurrentDateTimeInMillis("00:01");
 
-            int nextNumber;
-            if (currentNumber < alarmReminderTimes.length - 1) {
-                nextNumber = currentNumber + 1;
-            } else {
-                nextNumber = 0;
-            }
-
-            long resetTime = alarmReminderTimes[nextNumber] - AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-
-            while (resetTime <= System.currentTimeMillis()) {
-                resetTime = resetTime + AlarmManager.INTERVAL_DAY;
-            }
-
-            // If last reminder, reset time = current time + 24 hours - 15m.
-            if (currentNumber == alarmReminderTimes.length - 1
-                    && (System.currentTimeMillis()
-                            < (resetTime
-                                    + AlarmManager.INTERVAL_DAY
-                                    - AlarmManager.INTERVAL_FIFTEEN_MINUTES))) {
-                resetTime = resetTime + AlarmManager.INTERVAL_DAY;
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
         }
     }
 

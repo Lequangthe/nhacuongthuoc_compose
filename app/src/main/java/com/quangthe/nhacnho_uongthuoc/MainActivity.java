@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements Pill.PillListener
                 pill.setAlarm(this);
                 pill.setStockupAlarm(this);
                 pill.setAlarmsSet(1);
+                pill.updatePillInDatabase(this);
             }
         }
     }
