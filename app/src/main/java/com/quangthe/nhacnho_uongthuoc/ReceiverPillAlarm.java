@@ -18,6 +18,5 @@ public class ReceiverPillAlarm extends BroadcastReceiver {
         int doseIndex = requestCode % 1000;
         
         pill.sendPillNotification(context, doseIndex);
-        pill.setAlarm(context);
     }
 }

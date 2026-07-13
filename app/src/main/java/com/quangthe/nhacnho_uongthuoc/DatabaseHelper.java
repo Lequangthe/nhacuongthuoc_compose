@@ -157,6 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updatePill(Pill userPill) {
+        Log.d("PillTestSpy", "DATABASE: updatePill called for " + userPill.getName() + ". Current Taken bits: " + userPill.getTaken());
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PK + " = ?";
         String[] selectionArgs = new String[] {String.valueOf((userPill.getPrimaryKey()))};
 

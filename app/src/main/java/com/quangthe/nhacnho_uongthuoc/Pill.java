@@ -30,6 +30,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -83,12 +85,11 @@ public class Pill {
             int alarmsSet,
             int bottleColor) {
         setName(name);
-        setTimesArray(timesArray);
-        setAlarmReminderTimes();
         setStartDate(startDate);
+        setFrequency(frequency);
+        setTimesArray(timesArray);
         setStockupDate(stockupDate);
         setCustomAlarmUri(customAlarmUri);
-        setFrequency(frequency);
         setTaken(taken);
         setTimeTaken(timeTaken);
         setSupply(supply);
@@ -114,12 +115,11 @@ public class Pill {
             int bottleColor) {
         setPrimaryKey(primaryKey);
         setName(name);
-        setTimesArray(timesArray);
-        setAlarmReminderTimes();
         setStartDate(startDate);
+        setFrequency(frequency);
+        setTimesArray(timesArray);
         setStockupDate(stockupDate);
         setCustomAlarmUri(customAlarmUri);
-        setFrequency(frequency);
         setTaken(taken);
         setTimeTaken(timeTaken);
         setSupply(supply);
@@ -131,7 +131,35 @@ public class Pill {
 
     public Pill() {}
 
+    public void sendPillNotificationONLY_FOR_TEST(Context context, int doseIndex) {
+        Log.d("PillTestSpy", ">>> sendPillNotificationONLY_FOR_TEST called for dose: " + doseIndex);
+        NotificationManagerCompat pillNotificationManagerCompat = NotificationManagerCompat.from(context);
+        
+        int requestCode = getAlarmRequestCodes()[doseIndex];
+        
+        // NO PillAlarmDisplay here! Just status bar notification.
+        Intent openMainIntent = new Intent(context, MainActivity.class);
+        @SuppressLint("InlinedApi")
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                        context, requestCode, openMainIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Notification pillReminderNotification =
+                new NotificationCompat.Builder(context, Simpill.PILL_REMINDER_CHANNEL)
+                        .setSmallIcon(R.drawable.pill_bottle_color_2)
+                        .setContentTitle("[TEST] " + getName())
+                        .setContentText("Đây là thông báo giả cữ " + (doseIndex < getTimesArray().length ? getTimesArray()[doseIndex] : ""))
+                        .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setContentIntent(pendingIntent)
+                        .build();
+
+        // Dùng tag khác để không bị chồng lấn với thông báo thật
+        pillNotificationManagerCompat.notify("TEST_" + getName(), requestCode, pillReminderNotification);
+    }
+
     public void takePill(Context context, int doseIndex) {
+        Log.d("PillTestSpy", "CRITICAL: takePill() is being called for dose " + doseIndex + "! Checking stack trace...");
+        Log.d("PillTestSpy", Log.getStackTraceString(new Exception()));
         if (getSupply() > 0) {
             setSupply(getSupply() - 1);
         }
@@ -170,19 +198,22 @@ public class Pill {
     public void autoResetPill(Context context) {
         setTaken(PILL_NOT_TAKEN_VALUE);
         setTimeTaken(NULL_DB_ENTRY_STRING);
-        setAlarm(context);
         setAlarmsSet(1);
         updatePillInDatabase(context);
     }
 
     public void sendPillNotification(Context context, int doseIndex) {
+        Log.d("PillNotify", "Sending notification for dose " + doseIndex);
         NotificationManagerCompat pillNotificationManagerCompat =
                 NotificationManagerCompat.from(context);
         Notification pillReminderNotification;
 
         int requestCode = getAlarmRequestCodes()[doseIndex];
 
-        if ((getAlarmType() == ALARM || getAlarmType() == CUSTOM_ALARM)
+        // Nếu là thông báo TEST thực sự, không mở màn hình PillAlarmDisplay
+        boolean isTest = (doseIndex < 0); // Đánh dấu test bằng doseIndex âm
+
+        if (!isTest && (getAlarmType() == ALARM || getAlarmType() == CUSTOM_ALARM)
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && Settings.canDrawOverlays(context)) {
             context.startActivity(
@@ -327,7 +358,7 @@ public class Pill {
 
     public void setAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        
+
         for (int index = 0; index < getAlarmReminderTimes().length; index++) {
             int frequency = getFrequency();
             int requestCode = getAlarmRequestCodes()[index];
@@ -348,23 +379,11 @@ public class Pill {
 
             alarmManager.cancel(pillAlarmPendingIntent); // cancel old alarms
 
-            if (frequency <= 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(
-                            AlarmManager.RTC_WAKEUP, reminderTime, pillAlarmPendingIntent);
-                } else {
-                    alarmManager.setExact(
-                            AlarmManager.RTC_WAKEUP, reminderTime, pillAlarmPendingIntent);
-                }
-            } else {
-                alarmManager.setRepeating(
-                        AlarmManager.RTC_WAKEUP,
-                        reminderTime,
-                        AlarmManager.INTERVAL_DAY * frequency,
-                        pillAlarmPendingIntent);
-            }
+            long interval = AlarmManager.INTERVAL_DAY * Math.max(1, frequency);
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP, reminderTime, interval, pillAlarmPendingIntent);
         }
-        // Set a single auto-reset alarm for the pill at 00:01 AM (Next day)
+        // Set a single auto-reset alarm for the pill at 00:01 AM
         int resetRequestCode = getPrimaryKey() * 1000 + 999;
         Intent startAutoResetReceiver = new Intent(context, ReceiverPillAutoReset.class);
         startAutoResetReceiver.putExtra(PRIMARY_KEY_INTENT_KEY_STRING, getPrimaryKey());
@@ -379,14 +398,21 @@ public class Pill {
                         PendingIntent.FLAG_IMMUTABLE);
         alarmManager.cancel(autoResetPendingIntent); // cancel old auto resets
 
-        long resetTime = dateTimeManager.convertTimeToCurrentDateTimeInMillis("00:01");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
+        long resetInterval = AlarmManager.INTERVAL_DAY * Math.max(1, getFrequency());
+        long resetTime;
+        if (getFrequency() <= 1) {
+            resetTime = dateTimeManager.convertTimeToCurrentDateTimeInMillis("00:01");
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, resetTime, autoResetPendingIntent);
+            // Reset at 00:01 on the next scheduled day
+            long nextMedTime = getAlarmReminderTimes()[0];
+            resetTime = new DateTime(nextMedTime).withTime(0, 1, 0, 0).getMillis();
+            while (resetTime <= System.currentTimeMillis()) {
+                resetTime += resetInterval;
+            }
         }
+
+        alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP, resetTime, resetInterval, autoResetPendingIntent);
     }
 
     public void setStockupAlarm(Context context) {
@@ -481,12 +507,9 @@ public class Pill {
     private void setAlarmReminderTimes() {
         this.alarmReminderTimes = new long[timesArray.length];
         for (int index = 0; index < timesArray.length; index++) {
-            long pillReminderTime =
-                    dateTimeManager.convertTimeToCurrentDateTimeInMillis(this.timesArray[index]);
-            while (pillReminderTime <= System.currentTimeMillis()) {
-                pillReminderTime = pillReminderTime + AlarmManager.INTERVAL_DAY;
-            }
-            this.alarmReminderTimes[index] = pillReminderTime;
+            this.alarmReminderTimes[index] =
+                    dateTimeManager.getNextScheduledTimeMillis(
+                            getStartDate(), this.timesArray[index], getFrequency());
         }
     }
 

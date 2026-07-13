@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,8 +82,9 @@ public class MainRecyclerViewAdapter
             pillBottleImage = itemView.findViewById(R.id.pill_bottle_image);
             bigButton = itemView.findViewById(R.id.bigButton);
             doseLayout = itemView.findViewById(R.id.dose_layout);
-            pillBottleImage.setOnCreateContextMenuListener(this);
-            bigButton.setOnCreateContextMenuListener(this);
+            
+            // Chỉ đăng ký Menu cho nền, tránh lặp lại
+            constraintLayout.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -238,21 +240,20 @@ public class MainRecyclerViewAdapter
             });
 
             doseChip.setOnLongClickListener(v -> {
-                toasts.showCustomToast("Đang test thông báo cữ " + displayTime + "...");
-                pill.sendPillNotification(context, doseIndex);
+                Log.d("PillTest", "Pure test triggered for: " + displayTime);
                 
-                // Hiệu ứng xanh ảo trong 1.5 giây
-                if (!pill.isDoseTaken(doseIndex)) {
-                    doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_green));
-                    doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.white, null));
-                    v.postDelayed(() -> {
-                        // Trả lại màu cũ nếu thực tế chưa bấm uống
-                        if (!pill.isDoseTaken(doseIndex)) {
-                            doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_dark));
-                            doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.alice_blue, null));
-                        }
-                    }, 1500);
-                }
+                // Tô xanh giả lập trong 2 giây (không lưu vào DB)
+                doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_green));
+                doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.white, null));
+                doseChip.postDelayed(() -> {
+                    if (!pill.isDoseTaken(doseIndex)) {
+                        doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_dark));
+                        doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.alice_blue, null));
+                    }
+                }, 2000);
+                
+                toasts.showCustomToast("Test: Đã uống thuốc lúc " + displayTime);
+                mainActivity.sendTestNotificationWithPermissionCheck(pill, doseIndex);
                 return true;
             });
             
@@ -274,7 +275,7 @@ public class MainRecyclerViewAdapter
 
         holder.pillBottleImage.setOnClickListener(
                 v -> {
-                    holder.constraintLayout.startAnimation(
+                    holder.pillBottleImage.startAnimation(
                             AnimationUtils.loadAnimation(context, R.anim.bottle_shake));
                     if ((pill.getSupply() > 0)) {
                         toasts.showCustomToast(
@@ -288,15 +289,22 @@ public class MainRecyclerViewAdapter
     }
 
     private void initButtons(MyViewHolder holder, Pill pill, int position) {
-        holder.bigButton.setOnClickListener(
+        // Chuyển toàn bộ sự kiện của bigButton sang nền (constraintLayout)
+        holder.constraintLayout.setOnClickListener(
                 view -> {
+                    Log.d("PillTestSpy", "constraintLayout CLICKED for " + pill.getName());
                     Intent intent = new Intent(context, CreatePill.class);
                     intent.putExtra(PRIMARY_KEY_INTENT_KEY_STRING, pill.getPrimaryKey());
                     context.startActivity(intent);
                     MainActivity.backPresses = 0;
                 });
+        
+        // Vô hiệu hóa bigButton để nó không chặn sự kiện của các thành phần bên dưới (Chip)
+        holder.bigButton.setVisibility(View.GONE);
+        holder.bigButton.setClickable(false);
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            holder.bigButton.setContextClickable(true);
+            holder.constraintLayout.setContextClickable(true);
         }
     }
 }

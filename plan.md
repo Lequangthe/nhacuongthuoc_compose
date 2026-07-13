@@ -5,3 +5,15 @@
 ### Sửa lỗi build – Thiếu tài nguyên chuỗi `past_date_dialog_message`
 - File thay đổi: `app/src/main/res/values/strings.xml`, `app/src/main/res/values-es/strings.xml`, `app/src/main/res/values-fr/strings.xml`
 - Chi tiết: Thêm chuỗi `past_date_dialog_message` còn thiếu vào các file tài nguyên ngôn ngữ để khắc phục lỗi compile.
+
+### Fix core alarm scheduling logic – Vòng lặp vô hạn + infinite re-fire
+- File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/Pill.java`, `MainActivity.java`, `MainRecyclerViewAdapter.java`
+- Chi tiết: `setAlarm()` giờ tính động `convertTimeToCurrentDateTimeInMillis()` thay vì dùng `alarmReminderTimes[]` cũ. Sửa `deleteActiveNotifications()` cancel đúng index. Reschedule alarm sau khi take/dismiss.
+
+### Fix test dose – Chip xanh vĩnh viễn + thiếu feedback giả lập
+- File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/MainActivity.java`, `MainRecyclerViewAdapter.java`
+- Chi tiết: Context menu "Test Dose" giờ dùng `sendPillNotificationONLY_FOR_TEST()` thay vì `sendPillNotification()` (tránh mở `PillAlarmDisplay` và gọi `takePill()`). Long-press chip giờ tô xanh giả lập 2 giây rồi tự hồi phục.
+
+### Xin quyền POST_NOTIFICATIONS runtime khi test lần đầu
+- File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/MainActivity.java`, `MainRecyclerViewAdapter.java`
+- Chi tiết: Thêm `checkAndRequestNotificationPermission()` và `sendTestNotificationWithPermissionCheck()`. Khi test lần đầu trên Android 13+ sẽ hiện dialog xin quyền. Nếu chưa cấp, báo user bấm lại test sau khi cấp quyền.

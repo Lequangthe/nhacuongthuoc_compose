@@ -119,6 +119,44 @@ public class DateTimeManager {
         return reminderTimeInstant.getMillis();
     }
 
+    public long getNextScheduledTimeMillis(String startDateStr, String timeStr, int frequencyDays) {
+        return getNextScheduledTimeMillis(startDateStr, timeStr, frequencyDays, DateTime.now(DateTimeZone.getDefault()));
+    }
+
+    public long getNextScheduledTimeMillis(String startDateStr, String timeStr, int frequencyDays, DateTime now) {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormat.forPattern(TIME_FORMAT);
+
+        if (startDateStr == null || startDateStr.equals("null") || startDateStr.isEmpty()) {
+            startDateStr = now.toString(dateFormatter);
+        }
+
+        LocalDate startDate = LocalDate.parse(startDateStr, dateFormatter);
+        LocalTime time = LocalTime.parse(timeStr, timeFormatter);
+        DateTime startDateTime = startDate.toDateTime(time, DateTimeZone.getDefault());
+
+        if (frequencyDays <= 1) {
+            DateTime scheduled = now.withTime(time.getHourOfDay(), time.getMinuteOfHour(), 0, 0);
+            if (scheduled.isBefore(now)) {
+                scheduled = scheduled.plusDays(1);
+            }
+            return scheduled.getMillis();
+        } else {
+            if (startDateTime.isAfter(now)) {
+                return startDateTime.getMillis();
+            }
+
+            int daysBetween = org.joda.time.Days.daysBetween(startDate, now.toLocalDate()).getDays();
+            int cycles = daysBetween / frequencyDays;
+            DateTime scheduled = startDateTime.plusDays(cycles * frequencyDays);
+
+            if (scheduled.isBefore(now)) {
+                scheduled = startDateTime.plusDays((cycles + 1) * frequencyDays);
+            }
+            return scheduled.getMillis();
+        }
+    }
+
     public boolean isDateValid(String date) {
         try {
             DateTimeFormat.forPattern(DATE_FORMAT).parseDateTime(date);

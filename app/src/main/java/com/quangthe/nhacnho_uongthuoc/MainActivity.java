@@ -8,9 +8,12 @@ import static com.quangthe.nhacnho_uongthuoc.Simpill.CRASH_DATA_INTENT_KEY_STRIN
 import static com.quangthe.nhacnho_uongthuoc.Simpill.IS_CRASH_INTENT_KEY_STRING;
 
 import com.quangthe.nhacnho_uongthuoc.R;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -304,18 +307,49 @@ public class MainActivity extends AppCompatActivity implements Pill.PillListener
         return super.onContextItemSelected(item);
     }
 
+    static final int REQUEST_CODE_POST_NOTIFICATIONS = 1001;
+
+    private boolean checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true;
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return true;
+        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_POST_NOTIFICATIONS);
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_POST_NOTIFICATIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                toasts.showCustomToast("Đã cấp quyền thông báo");
+            } else {
+                toasts.showCustomToast("Cần bật quyền thông báo để dùng tính năng Test");
+            }
+        }
+    }
+
     private void showTestDoseDialog(Pill pill) {
         String[] doses = pill.getTimesArray();
         if (doses.length == 1) {
-            pill.sendPillNotification(this, 0);
+            sendTestNotificationWithPermissionCheck(pill, 0);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.context_menu_test_dose);
             builder.setItems(doses, (dialog, which) -> {
-                pill.sendPillNotification(this, which);
+                sendTestNotificationWithPermissionCheck(pill, which);
             });
             builder.show();
         }
+    }
+
+    void sendTestNotificationWithPermissionCheck(Pill pill, int doseIndex) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            toasts.showCustomToast("Bấm lại Test sau khi cấp quyền");
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_POST_NOTIFICATIONS);
+            return;
+        }
+        pill.sendPillNotificationONLY_FOR_TEST(this, doseIndex);
     }
 
     void isSqlDatabaseEmpty() {
