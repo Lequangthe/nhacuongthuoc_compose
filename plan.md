@@ -21,3 +21,7 @@
 ### Xoá notification đúng liều khi bấm chip "Đã uống"
 - File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/Pill.java`, `MainRecyclerViewAdapter.java`, `PillAlarmDisplay.java`
 - Chi tiết: `deleteActiveNotifications()` giờ nhận `doseIndex` và chỉ huỷ đúng notification của liều đó (dùng `getAlarmRequestCodes()[doseIndex]`). MainRecyclerViewAdapter gọi `deleteActiveNotifications(context, doseIndex)` sau `takePill()`. PillAlarmDisplay truyền `doseIndex` tương ứng.
+
+### GitHub Actions workflow auto build & release APK
+- File thay đổi: `.github/workflows/release-apk.yml`, `app/build.gradle`
+- Chi tiết: Thêm workflow build APK khi push tag `v*`. Signing config dùng biến môi trường (không hardcode password). Keystore giải mã từ secret base64.
