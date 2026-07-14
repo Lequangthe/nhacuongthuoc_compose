@@ -232,6 +232,7 @@ public class MainRecyclerViewAdapter
                     pill.setSupply(pill.getSupply() + 1);
                 } else {
                     pill.takePill(context, doseIndex);
+                    pill.deleteActiveNotifications(context, doseIndex);
                     if (sharedPrefs.getPillSoundPref()) audioHelper.getTakenPlayer().start();
                     toasts.showCustomToast(context.getString(R.string.pill_taken_toast, pill.getName()));
                 }

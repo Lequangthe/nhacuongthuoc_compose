@@ -136,7 +136,7 @@ public class PillAlarmDisplay extends AppCompatActivity {
                     int requestCode = intent.getIntExtra(Pill.NOTIFICATION_ID_INTENT_KEY_STRING, -1);
                     int doseIndex = requestCode % 1000;
                     pill.takePill(this, doseIndex);
-                    pill.deleteActiveNotifications(this);
+                    pill.deleteActiveNotifications(this, doseIndex);
                     vibrator.cancel();
                     stopAlarmAndVibrator();
                     takenPlayer = MediaPlayer.create(PillAlarmDisplay.this, R.raw.correct);

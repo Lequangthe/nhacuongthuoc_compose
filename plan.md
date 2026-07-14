@@ -17,3 +17,7 @@
 ### Xin quyền POST_NOTIFICATIONS runtime khi test lần đầu
 - File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/MainActivity.java`, `MainRecyclerViewAdapter.java`
 - Chi tiết: Thêm `checkAndRequestNotificationPermission()` và `sendTestNotificationWithPermissionCheck()`. Khi test lần đầu trên Android 13+ sẽ hiện dialog xin quyền. Nếu chưa cấp, báo user bấm lại test sau khi cấp quyền.
+
+### Xoá notification đúng liều khi bấm chip "Đã uống"
+- File thay đổi: `app/src/main/java/com/quangthe/nhacnho_uongthuoc/Pill.java`, `MainRecyclerViewAdapter.java`, `PillAlarmDisplay.java`
+- Chi tiết: `deleteActiveNotifications()` giờ nhận `doseIndex` và chỉ huỷ đúng notification của liều đó (dùng `getAlarmRequestCodes()[doseIndex]`). MainRecyclerViewAdapter gọi `deleteActiveNotifications(context, doseIndex)` sau `takePill()`. PillAlarmDisplay truyền `doseIndex` tương ứng.

@@ -349,11 +349,9 @@ public class Pill {
         pillNotificationManagerCompat.notify(getName(), getPrimaryKey(), pillReminderNotification);
     }
 
-    public void deleteActiveNotifications(Context context) {
-        for (int currentNumber = 1; currentNumber < getTimesArray().length + 1; currentNumber++) {
-            NotificationManagerCompat.from(context)
-                    .cancel(getName(), primaryKey * 10 * 10 * 10 + currentNumber);
-        }
+    public void deleteActiveNotifications(Context context, int doseIndex) {
+        NotificationManagerCompat.from(context)
+                .cancel(getName(), getAlarmRequestCodes()[doseIndex]);
     }
 
     public void setAlarm(Context context) {
