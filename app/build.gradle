@@ -24,11 +24,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("KEYSTORE_PATH") ?: "unset")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "unset"
+            keyAlias System.getenv("KEY_ALIAS") ?: "unset"
+            keyPassword System.getenv("KEY_PASSWORD") ?: "unset"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
