@@ -98,6 +98,7 @@ public class MainRecyclerViewAdapter
                     0,
                     R.string.context_menu_change_color);
             menu.add(this.getAbsoluteAdapterPosition() + 1, 4, 0, R.string.context_menu_test_dose);
+            menu.add(this.getAbsoluteAdapterPosition() + 1, 5, 0, "Xác nhận đã uống (Chọn liều)");
         }
     }
 
@@ -226,37 +227,9 @@ public class MainRecyclerViewAdapter
                 doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.alice_blue, null));
             }
 
-            doseChip.setOnClickListener(v -> {
-                if (pill.isDoseTaken(doseIndex)) {
-                    pill.setDoseTaken(doseIndex, false);
-                    pill.setSupply(pill.getSupply() + 1);
-                } else {
-                    pill.takePill(context, doseIndex);
-                    pill.deleteActiveNotifications(context, doseIndex);
-                    if (sharedPrefs.getPillSoundPref()) audioHelper.getTakenPlayer().start();
-                    toasts.showCustomToast(context.getString(R.string.pill_taken_toast, pill.getName()));
-                }
-                pill.updatePillInDatabase(context);
-                notifyItemChanged(holder.getAbsoluteAdapterPosition());
-            });
-
-            doseChip.setOnLongClickListener(v -> {
-                Log.d("PillTest", "Pure test triggered for: " + displayTime);
-                
-                // Tô xanh giả lập trong 2 giây (không lưu vào DB)
-                doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_green));
-                doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.white, null));
-                doseChip.postDelayed(() -> {
-                    if (!pill.isDoseTaken(doseIndex)) {
-                        doseChip.setBackground(AppCompatResources.getDrawable(context, R.drawable.dialog_bottom_btn_dark));
-                        doseChip.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.alice_blue, null));
-                    }
-                }, 2000);
-                
-                toasts.showCustomToast("Test: Đã uống thuốc lúc " + displayTime);
-                mainActivity.sendTestNotificationWithPermissionCheck(pill, doseIndex);
-                return true;
-            });
+            // CHUẨN MEN: Vô hiệu hoá tương tác trực tiếp trên Chip
+            doseChip.setClickable(false);
+            doseChip.setFocusable(false);
             
             holder.doseLayout.addView(doseChip);
         }

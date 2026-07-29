@@ -196,6 +196,16 @@ public class Settings extends AppCompatActivity implements Dialogs.SettingsDialo
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
+
+            // Lập lịch lại báo thức TRƯỚC khi khởi động lại
+            DatabaseHelper dbHelper = new DatabaseHelper(this);
+            Pill[] pills = dbHelper.getAllPills();
+            for (Pill p : pills) {
+                p.setAlarm(this);
+                p.setStockupAlarm(this);
+            }
+            dbHelper.close();
+
             toasts.showCustomToast(getString(R.string.import_success));
             settingsChanged = true; // Refresh UI
             Process.killProcess(Process.myPid()); // Restart to apply new DB

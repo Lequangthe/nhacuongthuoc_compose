@@ -21,7 +21,7 @@ public class ArrayHelper {
                                 timeArray[currentNumber]);
                 long nextArrIndexTime =
                         dateTimeManager.convertTimeToCurrentDateTimeInMillis(
-                                timeArray[currentNumber]);
+                                timeArray[nextNumber]);
 
                 String currentTime = dateTimeManager.formatLongAsTimeString(currentArrIndexTime);
                 String nextTime = dateTimeManager.formatLongAsTimeString(nextArrIndexTime);

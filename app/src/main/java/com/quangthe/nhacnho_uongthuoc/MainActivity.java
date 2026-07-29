@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Pill.PillListener
     private final DatabaseHelper myDatabase = new DatabaseHelper(this);
     private final ArrayHelper arrayHelper = new ArrayHelper();
     private final Toasts toasts = new Toasts(this);
+    private final DateTimeManager dateTimeManager = new DateTimeManager();
     public Pill[] pills;
 
     public static int backPresses = 0;
@@ -301,10 +302,40 @@ public class MainActivity extends AppCompatActivity implements Pill.PillListener
             case 4:
                 showTestDoseDialog(pill);
                 break;
+            case 5:
+                showTakeDoseDialog(pill, item.getGroupId() - 1);
+                break;
             default:
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void showTakeDoseDialog(Pill pill, int position) {
+        String[] doses = pill.getTimesArray();
+        String[] displayDoses = new String[doses.length];
+        for (int i = 0; i < doses.length; i++) {
+            String status = pill.isDoseTaken(i) ? " (Đã uống)" : " (Chưa uống)";
+            displayDoses[i] = (sharedPrefs.get24HourFormatPref() ? doses[i] : dateTimeManager.convert24HrTimeTo12HrTime(doses[i])) + status;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Chọn liều để thay đổi trạng thái");
+        builder.setItems(displayDoses, (dialog, which) -> {
+            if (pill.isDoseTaken(which)) {
+                pill.setDoseTaken(which, false);
+                pill.setSupply(pill.getSupply() + 1);
+                toasts.showCustomToast("Đã hoàn tác liều " + doses[which]);
+            } else {
+                pill.takePill(this, which);
+                pill.deleteActiveNotifications(this, which);
+                if (sharedPrefs.getPillSoundPref()) new AudioHelper(this).getTakenPlayer().start();
+                toasts.showCustomToast(getString(R.string.pill_taken_toast, pill.getName()));
+            }
+            pill.updatePillInDatabase(this);
+            myAdapter.notifyItemChanged(position);
+        });
+        builder.show();
     }
 
     static final int REQUEST_CODE_POST_NOTIFICATIONS = 1001;

@@ -25,3 +25,10 @@
 ### GitHub Actions workflow auto build & release APK
 - File thay đổi: `.github/workflows/release-apk.yml`, `app/build.gradle`
 - Chi tiết: Thêm workflow build APK khi push tag `v*`. Signing config dùng biến môi trường (không hardcode password). Keystore giải mã từ secret base64.
+
+### Kiểm tra tính nhất quán thông báo & logic Import
+- File thay đổi: `Settings.java`, `ArrayHelper.java`, `Pill.java`, `MainRecyclerViewAdapter.java`
+- Chi tiết: 
+    1. Sửa lỗi `sortTimeArray` so sánh nhầm chỉ số khiến thứ tự Sáng-Trưa-Chiều bị đảo lộn.
+    2. Sửa lỗi Import: Ép buộc đặt lại toàn bộ báo thức (`setAlarm`) sau khi khôi phục database để tránh thuốc bị "im lặng".
+    3. Giải quyết can thiệp thủ công: Cập nhật `sendPillNotification` để không hiển thị thông báo "Đã uống" gây phiền nhiễu nếu người dùng đã bấm chip trước giờ báo thức. Đảm bảo test notification không làm thay đổi trạng thái database.

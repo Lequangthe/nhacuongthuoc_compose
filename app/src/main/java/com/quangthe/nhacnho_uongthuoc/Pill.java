@@ -204,6 +204,13 @@ public class Pill {
 
     public void sendPillNotification(Context context, int doseIndex) {
         Log.d("PillNotify", "Sending notification for dose " + doseIndex);
+        
+        // GIẢI QUYẾT RỐT RÁO: Nếu đã bấm chip uống thuốc trước giờ, không hiện thông báo nữa.
+        if (isDoseTaken(doseIndex)) {
+            Log.d("PillNotify", "Dose " + doseIndex + " was already taken manually. Skipping.");
+            return;
+        }
+
         NotificationManagerCompat pillNotificationManagerCompat =
                 NotificationManagerCompat.from(context);
         Notification pillReminderNotification;
@@ -258,27 +265,6 @@ public class Pill {
                                 context.getString(R.string.open),
                                 pendingIntent)
                         .build();
-
-        if (isDoseTaken(doseIndex)) {
-            pillReminderNotification =
-                    new NotificationCompat.Builder(context, Simpill.PILL_REMINDER_CHANNEL)
-                            .setSmallIcon(R.drawable.pill_bottle_color_2)
-                            .setColor(500086)
-                            .setStyle(
-                                    new NotificationCompat.BigTextStyle()
-                                            .bigText(
-                                                    context.getString(
-                                                            R.string
-                                                                    .reminder_already_taken_description,
-                                                            getName())))
-                            .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            .setOngoing(false)
-                            .setContentIntent(pendingIntent)
-                            .setFullScreenIntent(pendingIntent, true)
-                            .addAction(R.mipmap.ic_launcher, "Open", pendingIntent)
-                            .build();
-        }
 
         pillNotificationManagerCompat.notify(getName(), requestCode, pillReminderNotification);
     }
