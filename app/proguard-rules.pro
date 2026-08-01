@@ -22,3 +22,7 @@
 
 -dontwarn org.joda.convert.FromString
 -dontwarn org.joda.convert.ToString
+
+# Compose runtime: keep SnapshotState locks so R8 does not break lock verification
+# (otherwise "failed lock verification and will run slower" warnings on state access)
+-keep class androidx.compose.runtime.snapshots.** { *; }

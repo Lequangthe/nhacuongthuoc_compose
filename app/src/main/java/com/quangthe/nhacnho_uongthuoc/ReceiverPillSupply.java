@@ -10,10 +10,13 @@ import android.content.Intent;
 public class ReceiverPillSupply extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Pill pill =
-                new DatabaseHelper(context)
-                        .getPill(intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1));
-        pill.sendStockupNotification(context);
-        pill.setStockupAlarm(context);
+        int pk = intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1);
+        new Thread(() -> {
+            Pill pill = AppDatabase.Companion.getDatabase(context).pillDao().getPillSync(pk);
+            if (pill != null) {
+                pill.sendStockupNotification(context);
+                pill.setStockupAlarm(context);
+            }
+        }).start();
     }
 }

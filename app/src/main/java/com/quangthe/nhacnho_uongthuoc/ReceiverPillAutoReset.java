@@ -10,9 +10,14 @@ import android.content.Intent;
 public class ReceiverPillAutoReset extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Pill pill =
-                new DatabaseHelper(context)
-                        .getPill(intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1));
-        pill.autoResetPill(context);
+        int pk = intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1);
+        new Thread(() -> {
+            PillDao pillDao = AppDatabase.Companion.getDatabase(context).pillDao();
+            Pill pill = pillDao.getPillSync(pk);
+            if (pill != null) {
+                pill.autoResetPill(context);
+                pillDao.updatePillSync(pill);
+            }
+        }).start();
     }
 }

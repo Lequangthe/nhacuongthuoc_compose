@@ -12,16 +12,19 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     @SuppressLint("ShortAlarm")
     @Override
     public void onReceive(Context context, Intent intent) {
-        DatabaseHelper myDatabase = new DatabaseHelper(context);
-
-        if (Objects.equals(intent.getAction(), "android.intent.action.BOOT_COMPLETED")
-                && myDatabase.getRowCount() > 0) {
-            Pill[] pills = myDatabase.getAllPills();
-            for (Pill pill : pills) {
-                pill.setAlarm(context);
-                pill.setStockupAlarm(context);
-            }
-            new Toasts(context).showCustomToast(context.getString(R.string.device_restart_toast));
+        if (Objects.equals(intent.getAction(), "android.intent.action.BOOT_COMPLETED")) {
+            new Thread(() -> {
+                java.util.List<Pill> pills = AppDatabase.Companion.getDatabase(context).pillDao().getAllPillsNonSuspend();
+                if (!pills.isEmpty()) {
+                    for (Pill pill : pills) {
+                        pill.setAlarm(context);
+                        pill.setStockupAlarm(context);
+                    }
+                    new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                        new Toasts(context).showCustomToast(context.getString(R.string.device_restart_toast));
+                    });
+                }
+            }).start();
         }
     }
 }

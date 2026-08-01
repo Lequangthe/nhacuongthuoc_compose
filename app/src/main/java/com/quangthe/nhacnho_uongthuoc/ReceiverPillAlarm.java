@@ -11,12 +11,15 @@ public class ReceiverPillAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        Pill pill = databaseHelper.getPill(intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1));
-        
+        int pk = intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1);
         int requestCode = intent.getIntExtra(Pill.NOTIFICATION_ID_INTENT_KEY_STRING, -1);
         int doseIndex = requestCode % 1000;
-        
-        pill.sendPillNotification(context, doseIndex);
+
+        new Thread(() -> {
+            Pill pill = AppDatabase.Companion.getDatabase(context).pillDao().getPillSync(pk);
+            if (pill != null) {
+                pill.sendPillNotification(context, doseIndex);
+            }
+        }).start();
     }
 }

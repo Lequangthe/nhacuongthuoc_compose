@@ -25,8 +25,7 @@ public class Simpill extends Application {
     public static final int GREY_THEME = 3;
     public static final int PURPLE_THEME = 4;
 
-    public static final String IS_CRASH_INTENT_KEY_STRING = "crash?";
-    public static final String CRASH_DATA_INTENT_KEY_STRING = "crash_data";
+    public static final String CRASH_REPORT_FILE_NAME = "crash_report.txt";
 
     public static final String LINE_SEPARATOR = "\n";
 
@@ -65,12 +64,18 @@ public class Simpill extends Application {
                     errorReport.append("Incremental: ").append(Build.VERSION.INCREMENTAL);
                     errorReport.append(LINE_SEPARATOR);
 
+                    try {
+                        java.io.FileOutputStream fileOutputStream =
+                                openFileOutput(CRASH_REPORT_FILE_NAME, MODE_PRIVATE);
+                        fileOutputStream.write(String.valueOf(errorReport).getBytes());
+                        fileOutputStream.close();
+                    } catch (Exception ignored) {
+                    }
+
                     PackageManager packageManager = this.getPackageManager();
                     Intent intent = packageManager.getLaunchIntentForPackage(this.getPackageName());
                     ComponentName componentName = intent.getComponent();
                     Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-                    mainIntent.putExtra(IS_CRASH_INTENT_KEY_STRING, true);
-                    mainIntent.putExtra(CRASH_DATA_INTENT_KEY_STRING, String.valueOf(errorReport));
                     this.startActivity(mainIntent);
                     Runtime.getRuntime().exit(0);
                 };
@@ -83,8 +88,6 @@ public class Simpill extends Application {
     }
 
     void createNotificationChannels() {
-        System.out.println("Creating Notification Channels");
-
         Uri soundUri =
                 Uri.parse(
                         ContentResolver.SCHEME_ANDROID_RESOURCE

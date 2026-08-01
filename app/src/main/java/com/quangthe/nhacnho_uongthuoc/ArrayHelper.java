@@ -48,9 +48,16 @@ public class ArrayHelper {
     }
 
     public String[] convert24HrArrayTo12HrArray(String[] array) {
+        DateTimeManager dateTimeManager = new DateTimeManager();
         for (int currentArrayNumber = 0; currentArrayNumber < array.length; currentArrayNumber++) {
-            array[currentArrayNumber] =
-                    new DateTimeManager().convert24HrTimeTo12HrTime(array[currentArrayNumber]);
+            if (array[currentArrayNumber] != null && !array[currentArrayNumber].trim().isEmpty()) {
+                try {
+                    array[currentArrayNumber] =
+                            dateTimeManager.convert24HrTimeTo12HrTime(array[currentArrayNumber]);
+                } catch (Exception e) {
+                    // Skip invalid formats
+                }
+            }
         }
 
         return array;

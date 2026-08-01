@@ -47,50 +47,59 @@ public class PillAlarmDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         audioHelper = new AudioHelper(this);
         intent = getIntent();
-        pill =
-                new DatabaseHelper(this)
-                        .getPill(intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1));
-        setContentViewBasedOnThemeSetting();
-        initVibratorAndAlarm();
-        initWidgets();
-        createOnClickListeners();
+        
+        new Thread(() -> {
+            pill = AppDatabase.Companion.getDatabase(this).pillDao()
+                        .getPillSync(intent.getIntExtra(PRIMARY_KEY_INTENT_KEY_STRING, -1));
+            
+            runOnUiThread(() -> {
+                if (pill == null) {
+                    finish();
+                    return;
+                }
+                setContentViewBasedOnThemeSetting();
+                initVibratorAndAlarm();
+                initWidgets();
+                createOnClickListeners();
 
-        DateTimeManager dateTimeManager = new DateTimeManager();
+                DateTimeManager dateTimeManager = new DateTimeManager();
 
-        pillName.setText(pill.getName());
-        String currentTime =
-                this.getString(
-                        R.string.its_time,
-                        sharedPrefs.get24HourFormatPref()
-                                ? dateTimeManager.getCurrentTimeString()
-                                : new DateTimeManager()
-                                        .convert24HrTimeTo12HrTime(
-                                                dateTimeManager.getCurrentTimeString()));
-        pillTime.setText(currentTime);
+                pillName.setText(pill.getName());
+                String currentTime =
+                        this.getString(
+                                R.string.its_time,
+                                sharedPrefs.get24HourFormatPref()
+                                        ? dateTimeManager.getCurrentTimeString()
+                                        : new DateTimeManager()
+                                                .convert24HrTimeTo12HrTime(
+                                                        dateTimeManager.getCurrentTimeString()));
+                pillTime.setText(currentTime);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true);
-            setTurnScreenOn(true);
-            KeyguardManager keyguardManager =
-                    (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-            if (keyguardManager != null) {
-                keyguardManager.requestDismissKeyguard(this, null);
-            }
-        } else {
-            getWindow()
-                    .addFlags(
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                                    | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                                    | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                    setShowWhenLocked(true);
+                    setTurnScreenOn(true);
+                    KeyguardManager keyguardManager =
+                            (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+                    if (keyguardManager != null) {
+                        keyguardManager.requestDismissKeyguard(this, null);
+                    }
+                } else {
+                    getWindow()
+                            .addFlags(
+                                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                                            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                }
 
-        getOnBackPressedDispatcher()
-                .addCallback(
-                        this,
-                        new OnBackPressedCallback(true) {
-                            @Override
-                            public void handleOnBackPressed() {}
-                        });
+                getOnBackPressedDispatcher()
+                        .addCallback(
+                                this,
+                                new OnBackPressedCallback(true) {
+                                    @Override
+                                    public void handleOnBackPressed() {}
+                                });
+            });
+        }).start();
     }
 
     void initVibratorAndAlarm() {
@@ -137,6 +146,11 @@ public class PillAlarmDisplay extends AppCompatActivity {
                     int doseIndex = requestCode % 1000;
                     pill.takePill(this, doseIndex);
                     pill.deleteActiveNotifications(this, doseIndex);
+                    
+                    new Thread(() -> {
+                        AppDatabase.Companion.getDatabase(this).pillDao().updatePillSync(pill);
+                    }).start();
+
                     vibrator.cancel();
                     stopAlarmAndVibrator();
                     takenPlayer = MediaPlayer.create(PillAlarmDisplay.this, R.raw.correct);
